@@ -1,0 +1,49 @@
+%%%%%%%%%%%%% Parametres generaux %%%%%%%%%%%%%%
+
+%-------------------------------------------
+% Dimensions des images
+%-------------------------------------------
+<img_width>
+320
+</img_width>
+
+<img_height>
+240
+</img_height>
+
+%%%%%%%%%%%%% Parametres Detecteur %%%%%%%%%%%%
+
+%-------------------------------------------
+% Type de detecteur
+%-------------------------------------------
+<DetectorType>
+DETECTMOTIONBLOB
+</DetectorType>
+
+%-------------------------------------------
+% Parametres de detecteur
+%-------------------------------------------
+<DetectorDim>
+2
+</DetectorDim>
+
+<DetectorMean>
+0	0
+</DetectorMean>
+
+<DetectorCov>
+36	0
+0	36
+<DetectorCov>
+
+<DetectorScaleFactor>
+2
+</DetectorScaleFactor>
+
+<DetectorThreshold>
+10
+</DetectorThreshold>
+
+<DetectorHysteresisThreshold>
+20	100
+</DetectorHysteresisThreshold>

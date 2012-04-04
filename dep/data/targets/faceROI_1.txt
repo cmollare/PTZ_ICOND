@@ -1,0 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ROI compose d'une region %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------
+% Nombre de ROI
+%-------------------------
+<nbROI>
+1
+</nbROI>
+
+%-------------------------
+% Decalages en X et Y par 
+% rapport a la reference
+%-------------------------
+<offsetROI_0>
+-7	-9
+</offsetROI_0>
+
+%-------------------------
+% Dimensions de la ROI
+%-------------------------
+<sizeROI_0>
+14	18
+</sizeROI_0>

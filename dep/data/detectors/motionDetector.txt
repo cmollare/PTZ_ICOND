@@ -1,0 +1,53 @@
+%%%%%%%%%%%%% Parametres generaux %%%%%%%%%%%%%%
+
+%-------------------------------------------
+% Dimensions des images
+%-------------------------------------------
+<img_width>
+320
+</img_width>
+
+<img_height>
+240
+</img_height>
+
+%%%%%%%%%%%%% Parametres Detecteur %%%%%%%%%%%%
+
+%-------------------------------------------
+% Type de detecteur
+%-------------------------------------------
+<DetectorType>
+DETECTMOTION
+</DetectorType>
+
+%-------------------------------------------
+% Parametres de detecteur
+%-------------------------------------------
+<DetectorDim>
+2
+</DetectorDim>
+
+<DetectorMean>
+0	0
+</DetectorMean>
+
+<DetectorCov>
+16	0
+0	16
+<DetectorCov>
+
+<DetectorNu>
+0
+</DetectorNu>
+
+<DetectorPas>
+10
+</DetectorPas>
+
+<DetectorRegSize>
+25	29
+</DetectorRegSize>
+
+<DetectorDistMax>
+0.15
+</DetectorDistMax>

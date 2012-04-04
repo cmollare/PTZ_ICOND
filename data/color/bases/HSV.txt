@@ -1,0 +1,13 @@
+<nm>
+HSV
+</nm>
+
+<pLum>
+3
+</pLum>
+
+<ranges>
+0	180
+0	255
+0	255
+</ranges>

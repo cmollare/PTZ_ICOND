@@ -1,0 +1,13 @@
+<nm>
+RGB
+</nm>
+
+<pLum>
+0
+</pLum>
+
+<ranges>
+0	255
+0	255
+0	255
+</ranges>

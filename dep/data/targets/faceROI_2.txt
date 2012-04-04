@@ -1,0 +1,40 @@
+%-------------------------
+% Nombre de ROI
+%-------------------------
+<nbROI>
+3
+</nbROI>
+
+%-------------------------
+% Parametres de la ROI 0
+%-------------------------
+<offsetROI_0>
+-16	-8
+</offsetROI_0>
+
+<sizeROI_0>
+32	16
+</sizeROI_0>
+
+%-------------------------
+% Parametres de la ROI 1
+%-------------------------
+<offsetROI_1>
+-16	8
+</offsetROI_1>
+
+<sizeROI_1>
+16	20
+</sizeROI_1>
+
+
+%-------------------------
+% Parametres de la ROI 2
+%-------------------------
+<offsetROI_2>
+0	8
+</offsetROI_2>
+
+<sizeROI_2>
+16	20
+</sizeROI_2>

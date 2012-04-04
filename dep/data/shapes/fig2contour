@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+if (!$ARGV[0]){
+    print "tem de indicar o nome do ficheiro de entrada e de saida\n";
+    exit;
+}
+open(f,"<$ARGV[0]") || die("nao pude abrir o ficheiro");
+open(fout,">$ARGV[1]") || die("Nao consegui abrir o ficheiro de saida\n");
+my $i;
+my $npts=0;
+$i=0;
+while(<f>){
+    if (($i==0)&& ($_ !~ "#FIG")){
+	print "not fig\n";
+	$i=1;
+	exit;
+    } 
+	
+	$i=1;
+    
+
+  
+    @a=split();
+    if($a[0]==3){
+	$npts=$a[13];
+	$_=<f>;
+    }
+   # print $_;
+    if ($npts>0){
+	@a=split();
+	for($idx=0;$idx<$#a;$idx=$idx+2){
+		$x=$a[$idx];
+		$y=$a[$idx+1];
+	#	print $x,"\t",$y," \n";
+		$npts=$npts-1;
+		$xx=($x/50-100.1)/2;
+		$yy=($y/50-71)/2;
+	print fout $xx,"\t",$yy,"\n";
+	}
+    }
+
+}

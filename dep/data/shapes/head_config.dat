@@ -1,0 +1,24 @@
+<nbparts>
+1
+</nbparts>
+<nbctrlpts_bypart>
+15
+</nbctrlpts_bypart>
+<numctrlpts_bypart>
+0	1	2	3	4	5	6	7	8	9	10	11	12	13	14
+</numctrlpts_bypart>
+<nbctrlpts_bymask>
+15
+</nbctrlpts_bymask>
+<numctrlpts_bymask>
+0	1	2	3	4	5	6	7	8	9	10	11	12	13	14
+</numctrlpts_bymask>
+<nbconfigs>
+1
+</nbconfigs>
+<nbparts_byconfig>
+1
+</nbparts_byconfig>
+<numparts_byconfig>
+0
+</numparts_byconfig>

@@ -1,0 +1,24 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       Fichier de configuration d'un filtre particulaire
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------
+% Type de filtre
+%-------------------------------
+<filterType>
+SIR
+</filterType>
+
+%-------------------------------
+% Nombre de particules
+%-------------------------------
+<nbSamples>
+100
+</nbSamples>
+
+%-------------------------------
+% Fichier contenant la target
+%-------------------------------
+<TargetFile>
+../targets/faceTracking.txt
+</Targetfile>

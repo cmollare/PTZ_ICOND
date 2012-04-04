@@ -1,0 +1,13 @@
+<nm>
+I1I2I3
+</nm>
+
+<pLum>
+1
+</pLum>
+
+<ranges>
+0	255
+0	255
+0	255
+</ranges>

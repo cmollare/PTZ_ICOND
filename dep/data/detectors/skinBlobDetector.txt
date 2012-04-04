@@ -1,0 +1,49 @@
+%%%%%%%%%%%%% Parametres generaux %%%%%%%%%%%%%%
+
+%-------------------------------------------
+% Dimensions des images
+%-------------------------------------------
+<img_width>
+320
+</img_width>
+
+<img_height>
+240
+</img_height>
+
+%%%%%%%%%%%%% Parametres Detecteur %%%%%%%%%%%%
+
+%-------------------------------------------
+% Type de detecteur
+%-------------------------------------------
+<DetectorType>
+DETECTSKINBLOB
+</DetectorType>
+
+%-------------------------------------------
+% Parametres de detecteur
+%-------------------------------------------
+<DetectorDim>
+2
+</DetectorDim>
+
+<DetectorMean>
+0	0
+</DetectorMean>
+
+<DetectorCov>
+36	0
+0	36
+<DetectorCov>
+
+<DetectorScaleFactor>
+4
+</DetectorScaleFactor>
+
+<DetectorThreshold>
+100
+</DetectorThreshold>
+
+<DetectorHysteresisThreshold>
+160	190
+</DetectorHysteresisThreshold>
