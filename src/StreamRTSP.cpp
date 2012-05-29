@@ -1,7 +1,9 @@
 #include "StreamRTSP.h"
 
-StreamRTSP::StreamRTSP(string pathRTSP, int fps)
+StreamRTSP::StreamRTSP(string pathRTSP, int fps, bool iplImage)
 {
+	this->iplImage=iplImage;
+
 	ostringstream oss;
 	oss << pathRTSP;
 	if (fps != -1)
@@ -11,25 +13,43 @@ StreamRTSP::StreamRTSP(string pathRTSP, int fps)
 	}
 	
 	cout << "Open the stream (this might take several minutes...)\nWait the frame window" << endl;
-	vcap=cvCaptureFromFile(oss.str().c_str());
-
-	if(vcap==NULL)
+	
+	if (this->iplImage)
 	{
-        	cout << "Error opening video stream or file" << endl;
-    	}
+	  cvCap=cvCaptureFromFile(oss.str().c_str());
 
-	currentFrame = this->grabFrame();
+	  if(cvCap==NULL)
+	  {
+        	cout << "Error opening video stream or file" << endl;
+    	  }
+	  currentFrame = this->grabIplFrame();
+	}
+	else
+	{
+	  vcap.open(oss.str().c_str());
+	  matCurrentFrame = this->grabFrame();
+	}
+
+	
+}
+
+StreamRTSP::StreamRTSP(int device)
+{
+	vcap.open(device);
+	this->iplImage=false;
+	matCurrentFrame = this->grabFrame();
 }
 
 StreamRTSP::~StreamRTSP()
 {
-	cvReleaseCapture(&vcap);
+	if (this->iplImage)
+	  cvReleaseCapture(&cvCap);
 }
 
-IplImage *StreamRTSP::grabFrame()
+IplImage *StreamRTSP::grabIplFrame()
 {
 
-	currentFrame=cvQueryFrame(vcap);
+	currentFrame=cvQueryFrame(cvCap);
 	if (!currentFrame)
 	{
 	  cout << "StreamRTSP : grab frame error" << endl;
@@ -37,4 +57,13 @@ IplImage *StreamRTSP::grabFrame()
 	return currentFrame;
 }
 
+Mat StreamRTSP::grabFrame()
+{
+
+	if (!vcap.read(matCurrentFrame))
+	{
+	  cout << "StreamRTSP : grab frame error" << endl;
+	}
+	return matCurrentFrame;
+}
 

@@ -24,9 +24,9 @@
 % Parametres de la ROI 1
 %-------------------------
 <offsetROI_1>
--14	24
+-0	12
 </offsetROI_1>
 
 <sizeROI_1>
-26	24
+6	4
 </sizeROI_1>

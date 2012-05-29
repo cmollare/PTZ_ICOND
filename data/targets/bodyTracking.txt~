@@ -1,0 +1,200 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Fichier de configuration pour le suivi visuel
+%	dans la modalite FaceTracking
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------
+% Type de cible
+%-------------------------------------------
+<TargetType>
+ICU
+</TargetType>
+
+%%%%%%%%%%%%% Parametres generaux %%%%%%%%%%%%%%
+
+%-------------------------------------------
+% Dimensions des images
+%-------------------------------------------
+<img_width>
+320
+</img_width>
+
+<img_height>
+240
+</img_height>
+
+%%%%%%%%%%%%% Parametres continus %%%%%%%%%%%%%%
+
+%-------------------------------------------
+% Nombre de parametres continus
+%-------------------------------------------
+<nCP>
+3
+</nCP>
+
+%-------------------------------------------
+% Bornes min et max des parametres continus
+%-------------------------------------------
+<ContPRanges>
+Xk	0	320
+Yk	0	240
+Sk	1	4
+<ContPRanges>
+
+%-------------------------------------------
+% Type de dynamique continue
+%-------------------------------------------
+<ContDynamicType>
+RW
+</ContDynamicType>
+
+%-------------------------------------------
+% Parametres de dynamique continue
+%-------------------------------------------
+<ContDynNoiseMatr>
+225	0	0
+0	64	0
+0	0	0.01
+</ContDynNoiseMatr>
+
+%%%%%%%%%%%%% Parametres discrets %%%%%%%%%%%%%%
+
+%-------------------------------------------
+% Nombre de parametres discrets
+%-------------------------------------------
+<nDP>
+0
+</nDP>
+
+%-------------------------------------------
+% Limites parametres discrets
+%-------------------------------------------
+%<DiscPRanges>
+%Shape		4
+%</DiscPRanges>
+
+%-------------------------------------------
+% Type de dynamique discrete
+%-------------------------------------------
+%<DiscDynamicType>
+%TRANSMAT
+%</DiscDynamicType>
+
+%-------------------------------------------
+% Parametres de dynamique discrete
+%-------------------------------------------
+%<nbStates>
+%3
+%</nbStates>
+
+%<TransMatr>
+%0.8	0.1	0.1
+%0.2	0.7	0.1
+%0.1	0.1	0.8
+%</TransMatr>
+
+
+%%%%%%%%%%%%%% Parametres Prior %%%%%%%%%%%%%%%
+
+%-------------------------------------------
+% Type de prior
+%-------------------------------------------
+<PriorType>
+PRIORGAUSS
+</PriorType>
+
+%-------------------------------------------
+% Parametres de prior
+%-------------------------------------------
+<PriorGaussMean>
+160      120      2.1
+</PriorGaussMean>
+
+<PriorGaussCov>
+36	0	0
+0	25	0
+0	0	0.02
+</PriorGaussCov>
+
+%%%%%%%%%%%%% Parametres Detecteur %%%%%%%%%%%%
+
+%-------------------------------------------
+% Type de detecteur
+%-------------------------------------------
+<DetectorType>
+DETECTSKINBLOB
+</DetectorType>
+
+%-------------------------------------------
+% Parametres de detecteur
+%-------------------------------------------
+<DetectorDim>
+2
+</DetectorDim>
+
+<DetectorMean>
+0	0
+</DetectorMean>
+
+<DetectorCov>
+36	0
+0	36
+<DetectorCov>
+
+<DetectorScaleFactor>
+4
+</DetectorScaleFactor>
+
+<DetectorThreshold>
+100
+</DetectorThreshold>
+
+<DetectorHysteresisThreshold>
+160	190
+</DetectorHysteresisThreshold>
+
+%%%%%%%%%%%% Parametres de Mesure %%%%%%%%%%%%
+
+%%========
+%% FORME
+%%========
+
+%--------------------------------------------
+% Modele de forme de la cible [optionel]
+%--------------------------------------------
+<ShapeModel>
+head
+</ShapeModel>
+
+%--------------------------------------------------------
+% Mesure de forme ponderee par le mouvement  [optionel]
+%--------------------------------------------------------
+<UseFlowMask>
+no
+</UseFlowMask>
+
+
+%%==========
+%% COULEUR
+%%==========
+
+%--------------------------------------------------------
+% Fichier contenant la description des patchs [optionel]
+%--------------------------------------------------------
+<ColorRectStructFile>
+bodyROI.txt
+</ColorRectStructFile>
+
+%--------------------------------------------------------------
+% Vecteur de coeff de mise a jour des distributions de couleur
+% depend du nombre de patchs [optionel]
+%--------------------------------------------------------------
+<ColorUpdateCoeff>
+0.1	0.05
+</ColorUpdateCoeff>
+
+
+%%===========
+%% MOUVEMENT
+%%===========
+

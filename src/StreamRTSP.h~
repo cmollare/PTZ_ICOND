@@ -12,14 +12,21 @@ using namespace cv;
 class StreamRTSP
 {
 	public :
-	  StreamRTSP(string pathRTSP, int fps=-1);
+	  StreamRTSP(string pathRTSP, int fps=-1,  bool iplImage=false);
+	  StreamRTSP(int device=0);
 	  ~StreamRTSP();
-	  IplImage *grabCurrentFrame();
+	  IplImage *grabFrame();
+	  Mat grabFrame();
 
 	private :
-	  CvCapture *vcap;
+	  CvCapture *cvCap;
 	  IplImage *currentFrame;
+
+	  VideoCapture vcap;
+	  Mat matCurrentFrame;
 	  int fps;
+	  
+	  bool iplImage;
 };
 
 #endif

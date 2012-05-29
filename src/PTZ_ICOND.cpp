@@ -4,7 +4,6 @@ using namespace std;
 #include "applipath.h"
 #include "def_paramslist.h"
 
-
 #include "Sample.h"
 #include "ParticleFilter.h"
 #include "ICOND.h"
@@ -14,6 +13,9 @@ using namespace std;
 #include "StreamRTSP.h"
 
 #include <pthread.h>
+#include <time.h>//Fps processing
+#include <string>
+#include <sstream>
 
 typedef struct
 {
@@ -35,7 +37,7 @@ static void* pthread_img(void* stream)
 	{
 	  //cout << "pouet" << endl;
 	  pthread_mutex_lock(&(str->mutex_stock));
-	  str->imgBuf=str->stream->grabFrame();
+	  str->imgBuf=str->stream->grabIplFrame();
 	  pthread_mutex_unlock(&(str->mutex_stock));
 	}
 	return NULL;
@@ -62,19 +64,27 @@ void on_mouse(int event, int x, int y, int flags, void* param)
 
 int main()
 {
+	CvVideoWriter* vidWriter = cvCreateVideoWriter("../output/out.avi", CV_FOURCC('M', 'J', 'P', 'G'), 5, Size(320, 240));
 	ControlPTZ ctrlPTZ;
-	CorrectorPID PIDpan(0.03,0,0), PIDtilt(0.03,0,0), PIDzoom(4,0,0);
+	CorrectorPID PIDpan(0.2,0,0), PIDtilt(0.2,0,0), PIDzoom(150,0,0);
 	float errPan=0, errTilt=0, errZoom=0;
 	IplImage *imgIn, *imgBuf, *imgRes;
 	SStream stream;
-	stream.stream = new StreamRTSP("rtsp://opera:clm2pO@axis-ptz2/axis-media/media.amp");
+	stream.stream = new StreamRTSP("rtsp://opera:clm2pO@axis-ptz2/axis-media/media.amp", -1, true);
+	
+	///Font initialization///
+	CvFont *font;
+	cvInitFont(font, CV_FONT_HERSHEY_PLAIN, 1.0f, 1.0f);
+	///End Font initialization///
 
 	SMouseEvent mouseEvent;
 	mouseEvent.start_tracking=false;
 	
-	//Open the thread for RTSP streaming
+	///Open the thread for RTSP streaming///
 	pthread_t thread_img;
 	pthread_create(&thread_img, NULL, pthread_img, &stream);
+	///End thread openning///
+	
 	
 
 	ParticleFilter* pf = new ICONDFilter("../data/filters/body_tracking_icond.txt");
@@ -106,7 +116,7 @@ int main()
 	cvWaitKey(0);
 
 	Sample sps(3,0);
-  	double mm[3]={mouseEvent.point.x,mouseEvent.point.y,2.2};
+  	double mm[3]={mouseEvent.point.x,mouseEvent.point.y,1};
 
   	sps.ContinusP[0] = mm[0];
   	sps.ContinusP[1] = mm[1];
@@ -122,6 +132,15 @@ int main()
 	cvShowImage("img",imgIn);
 	cvShowImage("RES",imgRes);
 	//cvWaitKey(0);
+	
+	///Initialization time calculation///
+	time_t start, end;
+	double fps;
+	int counter = 0;
+	double sec;
+	//Start the clock
+	time(&start);
+	///End Initialization time calculation///
 
 	for(;;)
 	{
@@ -132,12 +151,19 @@ int main()
 	  cvCopyImage(imgIn,imgRes);
       	  cvShowImage("img",imgIn);
 
-	      /* On place l'image a traiter */
+	  /* On place l'image a traiter */
       	  pf->target->imgBank->set(imgIn);
 
       	  /* Execution de la detection */
       	  pf->target->detector->process();
       	  cout << "Found " << pf->target->detector->nbdetected << " faces\n";
+	  
+	  for(int j=0; j< pf->nbSamples ; j++)
+      	  {
+		int x = (int)pf->sps[j]->ContinusP[0];
+		int y = (int)pf->sps[j]->ContinusP[1];
+      		cvCircle(imgRes, cvPoint(x, y), 2, CV_RGB(255, 255, 0), 1);
+      	  }
 
       	  /* Filtrage */
       	  pf->step();
@@ -145,9 +171,27 @@ int main()
       	  /* Resultat */
       
       	  pf->target->Trace(pf->pfState,imgRes);
+	  int percent=5;
 	  errPan=-(float)imgIn->width/2+pf->pfState->ContinusP[pf->target->posXk];
 	  errTilt=(float)imgIn->height/2-pf->pfState->ContinusP[pf->target->posYk];
-	  ctrlPTZ.HTTPRequestPTZPosRelative(PIDpan.computeCorrection(errPan), PIDtilt.computeCorrection(errTilt),0);
+	  errZoom=1-pf->pfState->ContinusP[pf->target->posSk]/4.;
+	  errZoom-=1*(abs(errPan)/100+abs(errTilt)/100);
+	  //cout << "errZoom : " << errZoom << endl;
+	  //ctrlPTZ.HTTPRequestPTZPosRelative(PIDpan.computeCorrection(errPan), PIDtilt.computeCorrection(errTilt),0);
+
+	    /*****************************************************************/
+	    /**************************CORRECTION*****************************/
+	    /*****************************************************************/
+
+	    //errZ=percent-(track_box.size.width*track_box.size.height)/((float)img.cols*(float)img.rows)*100;
+	    //track_box.size.width*track_box.size.height is the area of the template
+
+	    //compute and send camera command
+		ctrlPTZ.HTTPRequestPTZ((int)PIDpan.computeCorrection(errPan),(int)PIDtilt.computeCorrection(errTilt),PIDzoom.computeCorrection(errZoom));
+	    /*****************************************************************/
+	    /**********************END OF CORRECTION**************************/
+	    /*****************************************************************/
+
 	  //cout << "posX : " << pf->pfState->ContinusP[pf->target->posXk] << endl;
 	  //cout << "posY : " << pf->pfState->ContinusP[pf->target->posYk] << endl;
       
@@ -155,17 +199,32 @@ int main()
       	  {
 		int x = (int)pf->sps[j]->ContinusP[0];
 		int y = (int)pf->sps[j]->ContinusP[1];
-      		cvCircle(imgRes, cvPoint(x, y), 2, CV_RGB(255, 255, 0), 1);
+      		cvCircle(imgRes, cvPoint(x, y), 2, CV_RGB(0, 255, 0), 1);
       	  }
       	  //pf->TraceAllSamples(imgRes, CV_RGB(255, 255, 0)); 
       	  //pf->PlotPkk(imgRes,CV_RGB(255, 255, 0));
+      	  ///Fps processing///
+      	  ostringstream oss;
+      	  time(&end);
+      	  ++counter;
+      	  sec = difftime (end, start);
+      	  fps = counter / sec;
+      	  oss << fps << " fps";
+      	  ///End Fps processing///
+      	  
+      	  
+      	  ///Display and save///
+      	  cvPutText(imgRes, oss.str().c_str(), cvPoint(5, 230), font, cvScalar(0, 255, 0));
       	  cvShowImage("RES",imgRes);
+      	  cvWriteFrame(vidWriter, imgRes);
+      	  ///End display and save///
 
 	  if(cv::waitKey(5) >= 0)
 	  {
+		cvReleaseVideoWriter(&vidWriter);
 		pthread_cancel(thread_img);
 		pthread_join(thread_img, NULL);
-		ctrlPTZ.HTTPRequestPTZPosAbsolute(-31.8904, -20, 550);
+		ctrlPTZ.HTTPRequestPTZPosAbsolute(-31.8904, -20, 50);
 		delete stream.stream;
 		cv::waitKey(100);
 		break;

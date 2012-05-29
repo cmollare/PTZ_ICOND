@@ -122,7 +122,7 @@ PRIORGAUSS
 % Type de detecteur
 %-------------------------------------------
 <DetectorType>
-DETECTFACE
+DETECTMOTIONBLOB
 </DetectorType>
 
 %-------------------------------------------
@@ -140,6 +140,18 @@ DETECTFACE
 36	0
 0	36
 <DetectorCov>
+
+<DetectorScaleFactor>
+2
+</DetectorScaleFactor>
+
+<DetectorThreshold>
+10
+</DetectorThreshold>
+
+<DetectorHysteresisThreshold>
+20	100
+</DetectorHysteresisThreshold>
 
 %%%%%%%%%%%% Parametres de Mesure %%%%%%%%%%%%
 

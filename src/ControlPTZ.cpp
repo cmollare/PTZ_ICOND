@@ -2,7 +2,7 @@
 
 ControlPTZ::ControlPTZ()
 {
-	//CURLcode response;
+	//Curl configuration to work with HTTPS protocole
 	handle=curl_easy_init();
 	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L);
 	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, 0L);
@@ -12,8 +12,7 @@ ControlPTZ::ControlPTZ()
   	curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, 1L);
   	curl_easy_setopt(handle, CURLOPT_MAXREDIRS, 50L);
   	curl_easy_setopt(handle, CURLOPT_HTTPAUTH, -17L);
-	//response = curl_easy_perform(handle);
-	//cout << response << endl;
+	
 }
 
 ControlPTZ::~ControlPTZ()
@@ -36,20 +35,26 @@ void ControlPTZ::HTTPRequestPTZ(int pan, int tilt, int zoom)
 	else if (tilt<-100)
 	  tilt=-100;
 
-	if (zoom>100)
+	/*if (zoom>100)
 	  zoom=100;
 	else if (zoom<-100)
-	  zoom=-100;
+	  zoom=-100;*/
+
+	if (zoom>9999)
+	  zoom=9999;
+	else if (zoom<-9999)
+	  zoom=-9999;
 
 	oss << "https://axis-ptz2/axis-cgi/com/ptz.cgi?continuouspantiltmove=";
 	oss << pan;
 	oss << ",";
 	oss << tilt;
-	oss <<"&continuouszoommove=";
-	oss << zoom;
+	oss << "&rzoom=" << zoom;
+	//oss <<"&continuouszoommove=";
+	//oss << zoom;
 	curl_easy_setopt(handle, CURLOPT_URL, oss.str().c_str());
 	response = curl_easy_perform(handle);
-	cout << response << endl;
+	//cout << response << endl;
 }
 
 void ControlPTZ::HTTPRequestPTZPosRelative(float pan, float tilt, float zoom)
@@ -78,7 +83,7 @@ void ControlPTZ::HTTPRequestPTZPosRelative(float pan, float tilt, float zoom)
 
 	curl_easy_setopt(handle, CURLOPT_URL, oss.str().c_str());
 	response = curl_easy_perform(handle);
-	cout << response << endl;
+	//cout << response << endl;
 }
 
 void ControlPTZ::HTTPRequestPTZPosAbsolute(float pan, float tilt, float zoom)
@@ -107,5 +112,5 @@ void ControlPTZ::HTTPRequestPTZPosAbsolute(float pan, float tilt, float zoom)
 
 	curl_easy_setopt(handle, CURLOPT_URL, oss.str().c_str());
 	response = curl_easy_perform(handle);
-	cout << response << endl;
+	//cout << response << endl;
 }
